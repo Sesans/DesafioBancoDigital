@@ -1,24 +1,23 @@
 package BancoDigital;
 
+import java.time.Instant;
+import java.time.Year;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-public class Conta {
+import java.util.Random;
+
+public abstract class Conta {
+    private Random gerador = new Random();
     private String numeroConta;
     private String agencia;
     private double saldo;
     private Cliente cliente;
     private List<String> extrato = new ArrayList<>();
 
-    public Conta(String numeroConta, String agencia, double saldo, Cliente cliente){
-        this.numeroConta = numeroConta;
-        this.agencia = agencia;
-        this.saldo = saldo;
-        this.cliente = cliente;
-        System.out.println("BancoDigital.Conta criada com sucesso!");
-    }
-    public Conta(String numeroConta, String agencia, Cliente cliente){
-        this.numeroConta = numeroConta;
-        this.agencia = agencia;
+    public Conta(Cliente cliente){
+        this.numeroConta = String.format("%09d", gerador.nextInt(999999999));
+        this.agencia = String.format("%04d", gerador.nextInt(9999));
         this.cliente = cliente;
         System.out.println("BancoDigital.Conta criada com sucesso!");
     }
@@ -29,7 +28,7 @@ public class Conta {
             System.out.println("Saque efetuado com sucesso!");
         }
         else
-            System.out.println("Valor: " + valorSaque + "acima do saldo atual: " + saldo);
+            System.out.println("Valor: " + valorSaque + " acima do saldo atual: " + saldo);
     }
     public void depositar(double valorDeposito){
         saldo += valorDeposito;
@@ -52,10 +51,10 @@ public class Conta {
     @Override
     public String toString() {
         return "BancoDigital.Conta{" +
-                "numeroConta='" + numeroConta + '\'' +
-                ", agencia='" + agencia + '\'' +
-                ", saldo=" + saldo +
-                '}';
+                "Titular da conta: '" + cliente.getNome() + '\'' +
+                ", número da conta: '" + numeroConta + '\'' +
+                ", agência: '" + agencia + '\'' +
+                ", saldo: " + saldo ;
     }
 
     public String getNumeroConta() {
